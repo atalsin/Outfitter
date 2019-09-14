@@ -1065,7 +1065,7 @@
 						<Size x="80" y="18"/>
 						<Anchors>
 							<Anchor point="TOPLEFT" relativeTo="PaperDollFrame">
-								<Offset x="85" y="-40"/>
+								<Offset x="105" y="-40"/>
 							</Anchor>
 						</Anchors>
 						<Scripts>
@@ -1311,10 +1311,16 @@
 						if CharacterLevelText then
 							CharacterLevelText:Hide()
 						end
+						if CharacterGuildText then
+							CharacterGuildText:Hide()
+						end
 					</OnShow>
 					<OnHide>
 						if CharacterLevelText then
 							CharacterLevelText:Show()
+						end
+						if CharacterGuildText then
+							CharacterGuildText:Show()
 						end
 					</OnHide>
 				</Scripts>
