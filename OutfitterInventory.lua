@@ -78,7 +78,7 @@ function Outfitter:GetBagItemInfo(bagIndex, slotIndex)
 
 	itemInfo.Texture = GetContainerItemInfo(bagIndex, slotIndex)
 	-- itemInfo.Gem1, itemInfo.Gem2, itemInfo.Gem3, itemInfo.Gem4 = GetContainerItemGems(bagIndex, slotIndex)
-	itemInfo.AzeriteCodes = self:GetAzeriteCodesForLocation(location)
+	-- itemInfo.AzeriteCodes = self:GetAzeriteCodesForLocation(location)
 	itemInfo.Location = {BagIndex = bagIndex, BagSlotIndex = slotIndex}
 	
 	return itemInfo
@@ -492,7 +492,7 @@ function Outfitter:GetSlotIDItemInfo(slotID)
 	itemInfo.Quality = GetInventoryItemQuality("player", slotID)
 	itemInfo.Texture = GetInventoryItemTexture("player", slotID)
 	-- itemInfo.Gem1, itemInfo.Gem2, itemInfo.Gem3, itemInfo.Gem4 = GetInventoryItemGems(slotID)
-	itemInfo.AzeriteCodes = self:GetAzeriteCodesForLocation(location)
+	-- itemInfo.AzeriteCodes = self:GetAzeriteCodesForLocation(location)
 	itemInfo.Location = {SlotID = slotID}
 
 	local location = ItemLocation:CreateFromEquipmentSlot(slotID)

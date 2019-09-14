@@ -55,7 +55,7 @@ end
 ----------------------------------------
 
 function Outfitter:InitializeQuickSlots()
-	Outfitter.QuickSlots = Outfitter:New(Outfitter._FlyoutQuickSlots)
+	-- Outfitter.QuickSlots = Outfitter:New(Outfitter._FlyoutQuickSlots)
 end
 
 Outfitter:RegisterOutfitEvent("OUTFITTER_INIT", function () Outfitter:InitializeQuickSlots() end)

@@ -584,7 +584,7 @@
 				<Anchors>
 					<Anchor point="TOPRIGHT">
 						<Offset>
-							<AbsDimension x="0" y="-27"/>
+							<AbsDimension x="-28" y="-36"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -608,7 +608,7 @@
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="TOPRIGHT">
 						<Offset>
-							<AbsDimension x="0" y="-30"/>
+							<AbsDimension x="-32" y="-30"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -1279,6 +1279,30 @@
 						</Anchors>
 						<Scripts>
 							<OnLoad>self.SlotName = "SecondaryHandSlot"</OnLoad>
+						</Scripts>
+					</CheckButton>
+					<CheckButton name="OutfitterEnableRangedSlot" inherits="OutfitterEnableTemplate">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="CharacterRangedSlot">
+								<Offset>
+									<AbsDimension x="-4" y="4"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnLoad>self.SlotName = "RangedSlot"</OnLoad>
+						</Scripts>
+					</CheckButton>
+					<CheckButton name="OutfitterEnableAmmoSlot" inherits="OutfitterEnableTemplate">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="CharacterAmmoSlot">
+								<Offset>
+									<AbsDimension x="-4" y="4"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnLoad>self.SlotName = "AmmoSlot"</OnLoad>
 						</Scripts>
 					</CheckButton>
 				</Frames>

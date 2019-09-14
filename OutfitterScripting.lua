@@ -99,7 +99,7 @@ Outfitter.ScriptModules.DruidShapeshift.Settings =
 	{id = "Cat", type = "boolean", label = "Cat form"},
 	{id = "Travel", type = "boolean", label = "Travel form"},
 	{id = "Moonkin", type = "boolean", label = "Moonkin form"},
-	{id = "Tree", type = "boolean", label = "Tree form"},
+	--{id = "Tree", type = "boolean", label = "Tree form"},
 }
 
 Outfitter.ScriptModules.DruidShapeshift.Events =
@@ -109,7 +109,7 @@ Outfitter.ScriptModules.DruidShapeshift.Events =
 	Cat = "CAT_FORM",
 	Travel = "TRAVEL_FORM",
 	Moonkin = "MOONKIN_FORM",
-	Tree = "TREE_FORM",
+	--Tree = "TREE_FORM",
 }
 
 function Outfitter.ScriptModules.DruidShapeshift:GetEquipHeader(pSettings)
@@ -264,16 +264,6 @@ function Outfitter:GenerateSmartUnequipScript(pEventID, pDescription, pUnequipDe
 -- $SETTING Tree2={type="boolean", label=Outfitter:GetTalentTreeName(2), default=true}
 -- $SETTING Tree3={type="boolean", label=Outfitter:GetTalentTreeName(3), default=true}
 -- $SETTING Tree4={type="boolean", label=Outfitter:GetTalentTreeName(4), default=true}
-
--- Unequip and return if they're not in an enabled spec
-
-if not setting.Tree1 and GetSpecialization() == 1
-or not setting.Tree2 and GetSpecialization() == 2
-or not setting.Tree3 and GetSpecialization() == 3
-or not setting.Tree4 and GetSpecialization() == 4 then
-    equip = false
-    return
-end
 ]]
 	end
 	
@@ -317,14 +307,6 @@ function Outfitter:GenerateShapeshiftScript(pEventID, pDescription, pAllowComple
 -- Just return if they're PvP'ing and don't want the outfit changing
 if (setting.DisableBG and Outfitter:InBattlegroundZone())
 or (setting.DisablePVP and UnitIsPVP("player")) then
-    return
-end
-
--- Return if they're not in an enabled spec
-if not setting.Tree1 and GetSpecialization() == 1
-or not setting.Tree2 and GetSpecialization() == 2
-or not setting.Tree3 and GetSpecialization() == 3
-or not setting.Tree4 and GetSpecialization() == 4 then
     return
 end
 
@@ -373,13 +355,6 @@ or (setting.DisablePVP and UnitIsPVP("player")) then
     return
 end
 
--- Return if they're not in an enabled spec
-if not setting.Tree1 and GetSpecialization() == 1
-or not setting.Tree2 and GetSpecialization() == 2
-or not setting.Tree3 and GetSpecialization() == 3
-or not setting.Tree4 and GetSpecialization() == 4 then
-    return
-end
 
 -- Return if the user isn't in full control
 
@@ -685,31 +660,6 @@ end
 ]],
 	},
 	{
-		Name = "Talent Tree",
-		ID = "TalentTree",
-		Category = "GENERAL",
-		Script = Outfitter:GenerateScriptHeader("ACTIVE_TALENT_GROUP_CHANGED PLAYER_TALENT_UPDATE", "Equips the outfit when you activate specs for the selected talent tree")..
-[[
--- $SETTING Tree1={type="boolean", label=Outfitter:GetTalentTreeName(1), default=false}
--- $SETTING Tree2={type="boolean", label=Outfitter:GetTalentTreeName(2), default=false}
--- $SETTING Tree3={type="boolean", label=Outfitter:GetTalentTreeName(3), default=false}
--- $SETTING Tree4={type="boolean", label=Outfitter:GetTalentTreeName(4), default=false}
-if setting.Tree1 and GetSpecialization() == 1
-or setting.Tree2 and GetSpecialization() == 2
-or setting.Tree3 and GetSpecialization() == 3
-or setting.Tree4 and GetSpecialization() == 4 then
-    if isEquipped then
-        return
-    end
-    equip = true
-    delay = 0.5
-else
-    equip= false
-    delay = 0.5
-end
-]],
-	},
-	{
 		Name = Outfitter.cRidingOutfit,
 		ID = "Riding",
 		Category = "TRADE",
@@ -993,14 +943,6 @@ or (setting.DisablePVP and UnitIsPVP("player")) then
     return
 end
 
--- Return if they're not in an enabled spec
-if not setting.Tree1 and GetSpecialization() == 1
-or not setting.Tree2 and GetSpecialization() == 2
-or not setting.Tree3 and GetSpecialization() == 3
-or not setting.Tree4 and GetSpecialization() == 4 then
-    return
-end
-
 -- Return if the user isn't in full control
 if not Outfitter.IsDead and not HasFullControl() then
     return
@@ -1056,12 +998,12 @@ end
 		Class = "DRUID",
 		Script = Outfitter:GenerateDruidShapeshiftScript("MOONKIN_FORM", "This outfit will be worn whenever you're in Moonkin Form"),
 	},
-	{
-		Name = Outfitter.cDruidTreeOfLifeForm,
-		ID = "Tree",
-		Class = "DRUID",
-		Script = Outfitter:GenerateDruidShapeshiftScript("TREE_FORM", "This outfit will be worn whenever you're in Tree Form"),
-	},
+	--{
+	--	Name = Outfitter.cDruidTreeOfLifeForm,
+	--	ID = "Tree",
+	--	Class = "DRUID",
+	--	Script = Outfitter:GenerateDruidShapeshiftScript("TREE_FORM", "This outfit will be worn whenever you're in Tree Form"),
+	--},
 	{
 		Name = Outfitter.cDruidProwl,
 		ID = "Prowl",
@@ -1778,37 +1720,37 @@ Outfitter.cScriptCategoryOrder =
 }
 
 function Outfitter:InstallTalentTreeScripts()
-	local _, playerClass = UnitClass("player")
-
-	-- Class talent tree scripts
-	for treeIndex = 1, 4 do
-		local name = Outfitter:GetTalentTreeName(treeIndex)
-		if not name then
-			break
-		end
-		table.insert(Outfitter.PresetScripts, {
-			Name = UnitClass("player")..": "..name,
-			ID = "SPECIALIZATION_"..treeIndex,
-			Class = playerClass,
-			Script = [[
--- $EVENTS PLAYER_ENTERING_WORLD ACTIVE_TALENT_GROUP_CHANGED
- 
--- Prevent the script from doing anything unless the specialization actually changes
-local specialization = GetSpecialization()
-if specialization == self.previousSpecialization then
-    return
-end
-self.previousSpecialization = specialization
- 
--- Equip/unequip
-equip = specialization == ]]..treeIndex..[[
- 
- 
--- Use a delay so that artifacts equip properly
-delay = 0.5
-]]
-		});
-	end
+--	local _, playerClass = UnitClass("player")
+--
+--	-- Class talent tree scripts
+--	for treeIndex = 1, 4 do
+--		local name = Outfitter:GetTalentTreeName(treeIndex)
+--		if not name then
+--			break
+--		end
+--		table.insert(Outfitter.PresetScripts, {
+--			Name = UnitClass("player")..": "..name,
+--			ID = "SPECIALIZATION_"..treeIndex,
+--			Class = playerClass,
+--			Script = [[
+---- $EVENTS PLAYER_ENTERING_WORLD ACTIVE_TALENT_GROUP_CHANGED
+-- 
+---- Prevent the script from doing anything unless the specialization actually changes
+--local specialization = GetSpecialization()
+--if specialization == self.previousSpecialization then
+--    return
+--end
+--self.previousSpecialization = specialization
+-- 
+---- Equip/unequip
+--equip = specialization == ]]..treeIndex..[[
+-- 
+-- 
+---- Use a delay so that artifacts equip properly
+--delay = 0.5
+--]]
+--		});
+--	end
 end
 
 function Outfitter:SortScripts()
@@ -1837,7 +1779,7 @@ function Outfitter:SortScripts()
 end
 
 function Outfitter:InitializeScripts()
-	Outfitter:InstallTalentTreeScripts()
+	-- Outfitter:InstallTalentTreeScripts()
 	Outfitter:SortScripts()
 end
 

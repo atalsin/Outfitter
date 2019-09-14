@@ -528,8 +528,8 @@ Outfitter.BuiltinEvents = {
 	["MOONKIN_FORM"] = true,
 	["NOT_MOONKIN_FORM"] = true,
 
-	["TREE_FORM"] = true,
-	["NOT_TREE_FORM"] = true,
+--	["TREE_FORM"] = true,
+--	["NOT_TREE_FORM"] = true,
 
 	["STEALTH"] = true,
 	["NOT_STEALTH"] = true,
@@ -807,6 +807,7 @@ Outfitter.cSlotNames =
 	
 	"MainHandSlot",
 	"SecondaryHandSlot",
+	"RangedSlot",
 	
 	-- Last priority goes to items with no durability
 	
@@ -818,6 +819,7 @@ Outfitter.cSlotNames =
 	"Finger1Slot",
 	"Trinket0Slot",
 	"Trinket1Slot",
+	"AmmoSlot",
 }
 
 Outfitter.cSlotOrder = {}
@@ -846,6 +848,8 @@ Outfitter.cSlotDisplayNames =
 	Trinket1Slot = Outfitter.cTrinket1SlotName,
 	MainHandSlot = MAINHANDSLOT,
 	SecondaryHandSlot = SECONDARYHANDSLOT,
+	RangedSlot = RANGEDSLOT,
+	AmmoSlot = AMMOSLOT,
 }
 
 Outfitter.cInvTypeToSlotName =
@@ -871,10 +875,10 @@ Outfitter.cInvTypeToSlotName =
 	INVTYPE_WEAPONMAINHAND = {SlotName = "MainHandSlot"},
 	INVTYPE_WEAPONOFFHAND = {SlotName = "SecondaryHandSlot"},
 	INVTYPE_WRIST = {SlotName = "WristSlot"},
-	INVTYPE_RANGED = {SlotName = "MainHandSlot"},
-	INVTYPE_RANGEDRIGHT = {SlotName = "MainHandSlot"},
-	INVTYPE_THROWN = {SlotName = "MainHandSlot"},
-	INVTYPE_RELIC = {SlotName = "MainHandSlot"},
+	INVTYPE_RANGED = {SlotName = "RangedSlot"},
+	INVTYPE_RANGEDRIGHT = {SlotName = "AmmoSlot"},
+	INVTYPE_THROWN = {SlotName = "RangedSlot"},
+	INVTYPE_RELIC = {SlotName = "RangedSlot"},
 }
 
 Outfitter.cHalfAlternateStatSlot =
@@ -942,7 +946,7 @@ Outfitter.cSpecialIDEvents =
 	Cat = {Equip = "CAT_FORM", Unequip = "NOT_CAT_FORM"},
 	Travel = {Equip = "TRAVEL_FORM", Unequip = "NOT_TRAVEL_FORM"},
 	Moonkin = {Equip = "MOONKIN_FORM", Unequip = "NOT_MOONKIN_FORM"},
-	Tree = {Equip = "TREE_FORM", Unequip = "NOT_TREE_FORM"},
+	-- Tree = {Equip = "TREE_FORM", Unequip = "NOT_TREE_FORM"},
 	Prowl = {Equip = "STEALTH", Unequip = "NOT_STEALTH"},
 	Caster = {Equip = "CASTER_FORM", Unequip = "NOT_CASTER_FORM"},
 	
@@ -1231,7 +1235,7 @@ function Outfitter:PlayerEnteringWorld()
 	self:ResumeLoadScreenEvents()
 	self:ScheduleSynch() -- Always sync on entering world
 	
-	self:SynchronizeEM()
+	-- self:SynchronizeEM()
 
 	self:EndEquipmentUpdate()
 end
@@ -1880,7 +1884,7 @@ function Outfitter:DeleteSelectedOutfit()
 end
 
 function Outfitter:TalentsChanged()
-	self.CanDualWield2H = self.PlayerClass == "WARRIOR" and GetSpecialization() == 2
+	--self.CanDualWield2H = self.PlayerClass == "WARRIOR" and GetSpecialization() == 2
 end
 
 function Outfitter:SetScript(pOutfit, pScript)
@@ -2018,7 +2022,7 @@ function Outfitter:AddOutfitMenu(menu, outfit)
 	end)
 	
 	-- Get the titles
-	local titles = self:GetSortedTitles()
+	--[[ local titles = self:GetSortedTitles()
 
 	-- Build the menu
 	local maxTitlesPerMenu = 30
@@ -2048,7 +2052,7 @@ function Outfitter:AddOutfitMenu(menu, outfit)
 			
 			startIndex = endIndex + 1
 		end
-	end)
+	end)]]
 	menu:AddChildMenu(self.cBankCategoryTitle, function (submenu)
 		submenu:AddFunction(self.cDepositToBank, function () self:PerformAction("DEPOSIT", outfit) end, not self.BankFrameIsOpen)
 		submenu:AddFunction(self.cDepositUniqueToBank, function () self:PerformAction("DEPOSITUNIQUE", outfit) end, not self.BankFrameIsOpen)
@@ -3237,7 +3241,7 @@ function Outfitter:Reset()
 
 	self.CurrentOutfit = self:GetInventoryOutfit()
 	self:InitializeOutfits()
-	self:SynchronizeEM()
+	-- self:SynchronizeEM()
 	
 	self.EquippedNeedsUpdate = false
 end
@@ -4682,8 +4686,8 @@ function Outfitter:Initialize()
 	end
 	
 	-- Hook onto C_PetJournal.SummonPetByGUID so that the cooldown can be monitored
-	hooksecurefunc(C_PetJournal, "SummonPetByGUID", function () self.SummonPetByGUIDTime = GetTime() end)
-	self.SummonPetByGUIDTime = GetTime()
+	-- hooksecurefunc(C_PetJournal, "SummonPetByGUID", function () self.SummonPetByGUIDTime = GetTime() end)
+	-- self.SummonPetByGUIDTime = GetTime()
 	
 	-- Initialize the main UI tabs
 	self._SidebarWindowFrame.Construct(OutfitterFrame)
@@ -4727,7 +4731,7 @@ function Outfitter:Initialize()
 		self:InitializeOutfits()
 	end
 	
-	self:InstallDefaultSpecializationIcons()
+	-- self:InstallDefaultSpecializationIcons()
 	self:AttachOutfitMethods()
 	self:CheckDatabase()
 	
@@ -4771,7 +4775,7 @@ function Outfitter:Initialize()
 	end
 	
 	-- Move the Blizzard UI over a bit
-	PaperDollSidebarTabs:SetPoint("BOTTOMRIGHT", CharacterFrameInsetRight, "TOPRIGHT", -30, -1)
+	-- PaperDollSidebarTabs:SetPoint("BOTTOMRIGHT", CharacterFrameInsetRight, "TOPRIGHT", -30, -1)
 	
 	-- Initialize player state
 	
@@ -4830,8 +4834,8 @@ function Outfitter:Initialize()
 	
 	-- For monitoring void storage
 	
-	self.EventLib:RegisterEvent("VOID_STORAGE_OPEN", self.VoidStorageFrameOpened, self)
-	self.EventLib:RegisterEvent("VOID_STORAGE_CLOSE", self.VoidStorageFrameClosed, self)
+	-- self.EventLib:RegisterEvent("VOID_STORAGE_OPEN", self.VoidStorageFrameOpened, self)
+	-- self.EventLib:RegisterEvent("VOID_STORAGE_CLOSE", self.VoidStorageFrameClosed, self)
 	
 	-- For unequipping the dining outfit
 	
@@ -4873,10 +4877,10 @@ function Outfitter:Initialize()
 	
 	--
 	
-	self.EventLib:RegisterEvent("CHARACTER_POINTS_CHANGED", self.TalentsChanged, self)
-	self.EventLib:RegisterEvent("PLAYER_TALENT_UPDATE", self.TalentsChanged, self)
+	-- self.EventLib:RegisterEvent("CHARACTER_POINTS_CHANGED", self.TalentsChanged, self)
+	-- self.EventLib:RegisterEvent("PLAYER_TALENT_UPDATE", self.TalentsChanged, self)
 	
-	self:TalentsChanged()
+	-- self:TalentsChanged()
 	
 	-- Patch GameTooltip so we can monitor hide/show events
 	
@@ -4891,7 +4895,7 @@ function Outfitter:Initialize()
 	end
 	
 	-- Synchronize with the Equipment Manager
-	self:StartMonitoringEM()
+	-- self:StartMonitoringEM()
 
 	--
 	
@@ -5123,7 +5127,7 @@ function Outfitter:InitializeOutfits()
 	end
 
 	-- Load the EM outfits
-	self:SynchronizeEM()
+	-- self:SynchronizeEM()
 
 	-- Create the normal outfit using the current
 	-- inventory and set it as the currently equipped outfit
@@ -5177,39 +5181,39 @@ function Outfitter:InitializeSpecialOccasionOutfits()
 	local vOutfit
 	
 	-- Create talent tree outfits
-	self:InitializeTalentTreeOutfits()
+	-- self:InitializeTalentTreeOutfits()
 
 	-- Create class-specific outfits
 	self:InitializeClassOutfits()
 end
 
 function Outfitter:InstallDefaultSpecializationIcons()
-	local numSpecs = GetNumSpecializations()
-	for specIndex = 1, numSpecs do
-		local _, specName, _, specIconID = GetSpecializationInfo(specIndex)
-		local scriptID = "SPECIALIZATION_"..specIndex
-		Outfitter.OutfitBar.cDefaultScriptIcons[scriptID] = specIconID
-	end
+	--local numSpecs = GetNumSpecializations()
+	--for specIndex = 1, numSpecs do
+	--	local _, specName, _, specIconID = GetSpecializationInfo(specIndex)
+	--	local scriptID = "SPECIALIZATION_"..specIndex
+	--	Outfitter.OutfitBar.cDefaultScriptIcons[scriptID] = specIconID
+	--end
 end
 
 function Outfitter:InitializeTalentTreeOutfits()
-	local playerClass = UnitClass("player")
-
-	local numSpecs = GetNumSpecializations()
-	for specIndex = 1, numSpecs do
-		local _, specName, _, specIconID = GetSpecializationInfo(specIndex)
-
-		-- Done when the names run out
-		if not specName then
-			return
-		end
-
-		-- Create the outfit
-		local scriptID = "SPECIALIZATION_"..specIndex
-		local outfitName = playerClass..": "..specName
-		local outfit = self:CreateEmptySpecialOccasionOutfit(scriptID, outfitName)
-		outfit:SetIcon(specIconID)
-	end
+	--local playerClass = UnitClass("player")
+    --
+	--local numSpecs = GetNumSpecializations()
+	--for specIndex = 1, numSpecs do
+	--	local _, specName, _, specIconID = GetSpecializationInfo(specIndex)
+    --
+	--	-- Done when the names run out
+	--	if not specName then
+	--		return
+	--	end
+    --
+	--	-- Create the outfit
+	--	local scriptID = "SPECIALIZATION_"..specIndex
+	--	local outfitName = playerClass..": "..specName
+	--	local outfit = self:CreateEmptySpecialOccasionOutfit(scriptID, outfitName)
+	--	outfit:SetIcon(specIconID)
+	--end
 end
 
 function Outfitter:InitializeClassOutfits()
@@ -7798,8 +7802,8 @@ function Outfitter:SynchronizeCompanionState()
 end
 
 function Outfitter:GetTalentTreeName(pIndex)
-	local _, vName = GetSpecializationInfo(pIndex)
-	return vName
+	--local _, vName = GetSpecializationInfo(pIndex)
+	--return vName
 end
 
 function Outfitter:Run(pText)
